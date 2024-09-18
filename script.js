@@ -7,6 +7,8 @@ const apiId = "3fac8ac0";
 function handleSearch() {
   const searchBar = document.querySelector(".search-bar");
   const query = searchBar.value;
+
+  getRecipes(query);
 }
 
 // Add event listener to the search button
@@ -15,8 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
   searchButton.addEventListener("click", handleSearch);
 });
 
-async function getRecipes() {
-  const apiUrl = `https://api.edamam.com/api/recipes/v2?type=user&q=${chicken}&app_id=${apiId}0&app_key=${apiKey}`;
+async function getRecipes(query) {
+  const apiUrl = `https://api.edamam.com/api/recipes/v2?type=user&q=${query}&app_id=${apiId}&app_key=${apiKey}`;
 
   const response = await fetch(apiUrl);
 
