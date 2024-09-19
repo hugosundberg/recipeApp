@@ -38,5 +38,40 @@ function extractRecipeDetails(response) {
 }
 
 function displayRecipes(recipeDetails) {
-  console.log(recipeDetails);
+  const recipeContainer = document.getElementById("recipe-container");
+  recipeContainer.innerHTML = ""; // Clear previous search results
+
+  recipeDetails.forEach((recipe) => {
+    // Create a card element
+    const card = document.createElement("div");
+    card.classList.add("recipe-card");
+
+    // Recipe image
+    const img = document.createElement("img");
+    img.src = recipe.image;
+    img.alt = recipe.name;
+
+    // Recipe title
+    const title = document.createElement("h3");
+    title.textContent = recipe.name;
+
+    // Ingredients list
+    const ingredients = document.createElement("p");
+    ingredients.textContent = "Ingredients: " + recipe.ingredients.join(", ");
+
+    // Link to full recipe
+    const link = document.createElement("a");
+    link.href = recipe.url;
+    link.textContent = "View Recipe";
+    link.target = "_blank"; // Opens link in a new tab
+
+    // Append all elements to the card
+    card.appendChild(img);
+    card.appendChild(title);
+    card.appendChild(ingredients);
+    card.appendChild(link);
+
+    // Append the card to the container
+    recipeContainer.appendChild(card);
+  });
 }
