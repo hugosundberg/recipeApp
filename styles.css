@@ -72,12 +72,12 @@ body {
     flex-direction: column;
     height: 80vh;
     align-items: center;
-}
+} 
 
 .recipe-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 60px;
+    gap: 40px;
     width: 100%;
 }
 
@@ -87,7 +87,8 @@ body {
     flex-direction: column;
     width: 400px;
     height: 100%;
-    padding: 20px;
+    padding-top: 20px;
+    padding-inline: 20px;
     border-radius: 25px;
 }
 
