@@ -6,6 +6,16 @@ async function handleSearch() {
   const searchBar = document.querySelector(".search-bar");
   const query = searchBar.value;
 
+  if (query === "") {
+    // TODO: Display "Please enter a search term"
+    return;
+  }
+
+  // Loading indicator
+  // const recipeContainer = document.getElementById("results-container");
+  // recipeContainer.innerHTML = "";
+  // recipeContainer.innerHTML = "<p>Loading...</p>";
+
   const recipes = await getRecipes(query);
   const recipeDetails = extractRecipeDetails(recipes);
 
@@ -21,9 +31,16 @@ document.addEventListener("DOMContentLoaded", () => {
 async function getRecipes(query) {
   const apiUrl = `https://api.edamam.com/api/recipes/v2?type=public&q=${query}&app_id=${apiId}&app_key=${apiKey}`;
 
-  const response = await fetch(apiUrl);
-
-  return await response.json();
+  try {
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Fetch error: ", error);
+    alert("Unable to fetch recipes. Please try again later.");
+  }
 }
 
 // Event listener for 'Enter' key
@@ -34,6 +51,14 @@ document.addEventListener("keydown", function (event) {
 });
 
 function extractRecipeDetails(response) {
+  if (!response || !response.hits || response.hits.length === 0) {
+    // recipeContainer.innerHTML = "";
+    // recipeContainer.innerHTML = "<p>No recipes found</p>";
+
+    console.log("No recipes found");
+
+    return [];
+  }
   return response.hits.slice(0, 20).map((hit) => ({
     name: hit.recipe.label,
     url: hit.recipe.url,
@@ -44,7 +69,11 @@ function extractRecipeDetails(response) {
 
 function displayRecipes(recipeDetails) {
   const recipeContainer = document.getElementById("recipe-container");
-  recipeContainer.innerHTML = ""; // Clear previous search results
+  // recipeContainer.innerHTML = ""; // Clear previous search results
+
+  if (recipeDetails.length === 0) {
+    return;
+  }
 
   recipeDetails.forEach((recipe) => {
     // Create a card element
