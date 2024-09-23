@@ -12,9 +12,9 @@ async function handleSearch() {
   }
 
   // Loading indicator
-  // const recipeContainer = document.getElementById("results-container");
+  const recipeContainer = document.getElementById("recipe-container");
   // recipeContainer.innerHTML = "";
-  // recipeContainer.innerHTML = "<p>Loading...</p>";
+  recipeContainer.innerHTML = "<p>Loading...</p>";
 
   const recipes = await getRecipes(query);
   const recipeDetails = extractRecipeDetails(recipes);
@@ -51,12 +51,11 @@ document.addEventListener("keydown", function (event) {
 });
 
 function extractRecipeDetails(response) {
+  const recipeContainer = document.getElementById("recipe-container");
   if (!response || !response.hits || response.hits.length === 0) {
-    // recipeContainer.innerHTML = "";
-    // recipeContainer.innerHTML = "<p>No recipes found</p>";
-
-    console.log("No recipes found");
-
+    recipeContainer.innerHTML = "";
+    recipeContainer.innerHTML = "<p>No recipes found</p>";
+    console.log("no recipe found");
     return [];
   }
   return response.hits.slice(0, 20).map((hit) => ({
@@ -69,7 +68,7 @@ function extractRecipeDetails(response) {
 
 function displayRecipes(recipeDetails) {
   const recipeContainer = document.getElementById("recipe-container");
-  // recipeContainer.innerHTML = ""; // Clear previous search results
+  recipeContainer.innerHTML = ""; // Clear previous search results
 
   if (recipeDetails.length === 0) {
     return;

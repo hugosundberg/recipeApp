@@ -106,7 +106,12 @@ body {
     border-radius: 25px;
 }
 
-.recipe-card h3, p {
+.recipe-card h3 {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.recipe-card p {
     margin-top: 10px;
     margin-bottom: 10px;
 }
