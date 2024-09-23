@@ -5,19 +5,18 @@ const apiId = "3fac8ac0";
 async function handleSearch() {
   const searchBar = document.querySelector(".search-bar");
   const query = searchBar.value;
-  const recipeContainer = document.getElementById("recipe-container");
+  const message = document.getElementById("message");
 
   if (query === "") {
-    recipeContainer.innerHTML = "Please enter a search term";
+    message.textContent = "Please enter a search term";
     return;
   }
 
   // Loading indicator
-  recipeContainer.innerHTML = "<p>Loading...</p>";
+  message.textContent = "Loading...";
 
   const recipes = await getRecipes(query);
   const recipeDetails = extractRecipeDetails(recipes);
-
   displayRecipes(recipeDetails);
 }
 
@@ -35,6 +34,7 @@ async function getRecipes(query) {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
+    message.textContent = "";
     return await response.json();
   } catch (error) {
     console.error("Fetch error: ", error);
@@ -50,11 +50,9 @@ document.addEventListener("keydown", function (event) {
 });
 
 function extractRecipeDetails(response) {
-  const recipeContainer = document.getElementById("recipe-container");
+  const message = document.getElementById("message");
   if (!response || !response.hits || response.hits.length === 0) {
-    recipeContainer.innerHTML = "";
-    recipeContainer.innerHTML = "<p>No recipes found</p>";
-    console.log("no recipe found");
+    message.textContent = "No recipes found";
     return [];
   }
   return response.hits.slice(0, 20).map((hit) => ({
