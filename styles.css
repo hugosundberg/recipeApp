@@ -17,7 +17,6 @@ body {
     text-align: center;
     max-width: 400px;
     padding: 20px;
-
 }
 
 .title {
@@ -94,5 +93,33 @@ body {
 
 .recipe-card img {
     border-radius: 25px;
+}
+
+.recipe-card h3, p {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 1460px) {
+    .recipe-container {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 950px) {
+    .recipe-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 430px) {
+    .recipe-card {
+        width: 300px;
+    }
+
+    .recipe-container {
+        gap: 10;
+    }
+
 }
 
