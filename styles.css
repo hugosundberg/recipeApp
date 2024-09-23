@@ -70,7 +70,6 @@ body {
     display: flex;
     flex-direction: column;
     height: 80vh;
-    align-items: center;
 } 
 
 .recipe-container {
@@ -107,6 +106,7 @@ body {
 }
 
 .recipe-card h3 {
+    text-align: center;
     margin-top: 10px;
     margin-bottom: 0;
 }

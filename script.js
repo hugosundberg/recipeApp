@@ -5,15 +5,14 @@ const apiId = "3fac8ac0";
 async function handleSearch() {
   const searchBar = document.querySelector(".search-bar");
   const query = searchBar.value;
+  const recipeContainer = document.getElementById("recipe-container");
 
   if (query === "") {
-    // TODO: Display "Please enter a search term"
+    recipeContainer.innerHTML = "Please enter a search term";
     return;
   }
 
   // Loading indicator
-  const recipeContainer = document.getElementById("recipe-container");
-  // recipeContainer.innerHTML = "";
   recipeContainer.innerHTML = "<p>Loading...</p>";
 
   const recipes = await getRecipes(query);
