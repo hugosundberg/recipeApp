@@ -6,8 +6,6 @@ async function handleSearch() {
   const searchBar = document.querySelector(".search-bar");
   const query = searchBar.value;
 
-  console.log(query);
-
   const recipes = await getRecipes(query);
   const recipeDetails = extractRecipeDetails(recipes);
 
@@ -28,8 +26,15 @@ async function getRecipes(query) {
   return await response.json();
 }
 
+// Event listener for 'Enter' key
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    handleSearch();
+  }
+});
+
 function extractRecipeDetails(response) {
-  return response.hits.slice(0, 10).map((hit) => ({
+  return response.hits.slice(0, 20).map((hit) => ({
     name: hit.recipe.label,
     url: hit.recipe.url,
     image: hit.recipe.image,
