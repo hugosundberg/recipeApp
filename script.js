@@ -65,16 +65,20 @@ function displayRecipes(recipeDetails) {
     ingredients.textContent = "Ingredients: " + recipe.ingredients.join(", ");
 
     // Link to full recipe
+    const linkButton = document.createElement("button");
+
     const link = document.createElement("a");
     link.href = recipe.url;
     link.textContent = "View Recipe";
     link.target = "_blank"; // Opens link in a new tab
 
+    linkButton.appendChild(link);
+
     // Append all elements to the card
     card.appendChild(img);
     card.appendChild(title);
     card.appendChild(ingredients);
-    card.appendChild(link);
+    card.appendChild(linkButton);
 
     // Append the card to the container
     recipeContainer.appendChild(card);
