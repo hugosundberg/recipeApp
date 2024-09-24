@@ -4,10 +4,22 @@ const apiId = "3fac8ac0";
 let currentPage = 0;
 const resultsPerPage = 20;
 
-// Add event listener to the search button
+// Add event listeners to buttons
 document.addEventListener("DOMContentLoaded", () => {
   const searchButton = document.querySelector(".search-button");
-  searchButton.addEventListener("click", handleSearch);
+  searchButton.addEventListener("click", () => handleSearch(currentPage));
+
+  const nextButton = document.getElementById("next-page");
+  nextButton.addEventListener("click", () => {
+    currentPage++;
+    handleSearch(currentPage);
+  });
+
+  const previousButton = document.getElementById("next-button");
+  previousButton.addEventListener("click", () => {
+    currentPage--;
+    handleSearch(currentPage);
+  });
 });
 
 // Event listener for 'Enter' key
@@ -37,6 +49,7 @@ async function handleSearch(page = 0) {
   const recipes = await getRecipes(query, from, to);
   const recipeDetails = extractRecipeDetails(recipes);
   displayRecipes(recipeDetails);
+  updatePaginationControls(page, totalResults);
 }
 
 function updatePaginationControls(page, totalResults) {
