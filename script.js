@@ -50,7 +50,6 @@ async function handleSearch(page = 0) {
   const from = page * resultsPerPage;
   const to = from + resultsPerPage;
 
-  console.log("From: " + from + " \n " + "To: " + to);
   console.log("Current page: " + currentPage);
 
   const recipes = await getRecipes(query, from, to);
@@ -60,6 +59,7 @@ async function handleSearch(page = 0) {
     const recipeDetails = extractRecipeDetails(recipes);
     displayRecipes(recipeDetails);
     updatePaginationControls(page, totalResults);
+    console.log(recipes);
   } else {
     message.textContent = "No recipes found";
   }
@@ -80,6 +80,8 @@ function updatePaginationControls(page, totalResults) {
 // Fetching recipes from EDAMAM API
 async function getRecipes(query, from = 0, to = 20) {
   const apiUrl = `https://api.edamam.com/api/recipes/v2?type=public&q=${query}&app_id=${apiId}&app_key=${apiKey}&from=${from}&to=${to}`;
+
+  console.log("From: " + from + " \n " + "To: " + to);
 
   try {
     const response = await fetch(apiUrl);
