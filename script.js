@@ -8,14 +8,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchButton = document.querySelector(".search-button");
   searchButton.addEventListener("click", () => handleSearch());
 
-  const nextButton = document.getElementById("next-page");
+  const nextButton = document.getElementById("next-button");
   nextButton.addEventListener("click", () => {
     if (nextLink) {
       handleSearch(nextLink); // Use the next link to get the next page
     }
   });
 
-  const previousButton = document.getElementById("previous-page");
+  const previousButton = document.getElementById("previous-button");
   previousButton.addEventListener("click", () => {
     // Logic for handling previous can be added if needed
   });
@@ -61,7 +61,7 @@ async function handleSearch(url = null) {
 }
 
 function updatePaginationControls(links) {
-  const nextButton = document.getElementById("next-page");
+  const nextButton = document.getElementById("next-button");
 
   // Check if the "next" link exists in the response
   if (links && links.next) {
