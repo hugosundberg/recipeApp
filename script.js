@@ -3,6 +3,7 @@ const apiId = "3fac8ac0";
 
 let nextLink = null; // Store the link for the next page of results
 let previousLink = [];
+let currentPage = 1;
 
 // Add event listeners to buttons
 document.addEventListener("DOMContentLoaded", () => {
@@ -12,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextButton = document.getElementById("next-button");
   nextButton.addEventListener("click", () => {
     if (nextLink) {
+      currentPage++;
       previousLink.push(nextLink);
       handleSearch(nextLink);
     }
@@ -21,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   previousButton.addEventListener("click", () => {
     if (previousLink.length > 0) {
       const prevLink = previousLink.pop();
+      currentPage--;
       handleSearch(previousLink[previousLink.length - 1]);
     } else {
       handleSearch();
@@ -42,6 +45,7 @@ async function handleSearch(url = null) {
   const message = document.getElementById("message");
   const paginationControls = document.getElementById("pagination-controls");
   const recipeContainer = document.getElementById("recipe-container");
+  const page = document.getElementById("current-page");
 
   if (query === "" && !url) {
     message.textContent = "Please enter a search term";
@@ -60,6 +64,7 @@ async function handleSearch(url = null) {
 
       message.textContent = totalResults + " results";
       paginationControls.style.display = "flex";
+      page.textContent = currentPage;
 
       displayRecipes(recipeDetails); // Display the recipes
 
