@@ -2,6 +2,7 @@ const apiKey = "c56415d77325af3a344d29207d9dcdb3";
 const apiId = "3fac8ac0";
 
 let nextLink = null; // Store the link for the next page of results
+let previousLink = [];
 
 // Add event listeners to buttons
 document.addEventListener("DOMContentLoaded", () => {
@@ -11,13 +12,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextButton = document.getElementById("next-button");
   nextButton.addEventListener("click", () => {
     if (nextLink) {
-      handleSearch(nextLink); // Use the next link to get the next page
+      previousLink.push(nextLink);
+      handleSearch(nextLink);
     }
   });
 
   const previousButton = document.getElementById("previous-button");
   previousButton.addEventListener("click", () => {
-    // Logic for handling previous can be added if needed
+    if (previousLink.length > 0) {
+      const prevLink = previousLink.pop();
+      handleSearch(previousLink[previousLink.length - 1]);
+    } else {
+      handleSearch();
+    }
   });
 });
 
