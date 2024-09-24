@@ -40,6 +40,8 @@ async function handleSearch(url = null) {
   const searchBar = document.querySelector(".search-bar");
   const query = searchBar.value;
   const message = document.getElementById("message");
+  const paginationControls = document.getElementById("pagination-controls");
+  const recipeContainer = document.getElementById("recipe-container");
 
   if (query === "" && !url) {
     message.textContent = "Please enter a search term";
@@ -55,8 +57,8 @@ async function handleSearch(url = null) {
     if (recipes && recipes.hits.length > 0) {
       const totalResults = recipes.count; // Get the total number of results
       const recipeDetails = extractRecipeDetails(recipes); // Extract the recipe details
-      const paginationControls = document.getElementById("pagination-controls");
 
+      message.textContent = totalResults + " results";
       paginationControls.style.display = "flex";
 
       displayRecipes(recipeDetails); // Display the recipes
@@ -64,9 +66,12 @@ async function handleSearch(url = null) {
       // Update the pagination controls
       updatePaginationControls(recipes._links);
     } else {
+      recipeContainer.innerHTML = ""; // Clear previous search results
+      paginationControls.style.display = "none";
       message.textContent = "No recipes found";
     }
   } catch (error) {
+    console.error(error);
     message.textContent = "Error fetching recipes";
   }
 }
