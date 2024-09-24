@@ -9,13 +9,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchButton = document.querySelector(".search-button");
   searchButton.addEventListener("click", () => handleSearch(currentPage));
 
-  const nextButton = document.getElementById("next-page");
+  const nextButton = document.getElementById("next-button");
   nextButton.addEventListener("click", () => {
     currentPage++;
     handleSearch(currentPage);
   });
 
-  const previousButton = document.getElementById("next-button");
+  const previousButton = document.getElementById("previous-button");
   previousButton.addEventListener("click", () => {
     currentPage--;
     handleSearch(currentPage);
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // Event listener for 'Enter' key
 document.addEventListener("keydown", function (event) {
   if (event.key === "Enter") {
-    handleSearch();
+    handleSearch(currentPage);
   }
 });
 
@@ -47,14 +47,20 @@ async function handleSearch(page = 0) {
   const to = from + resultsPerPage;
 
   const recipes = await getRecipes(query, from, to);
-  const recipeDetails = extractRecipeDetails(recipes);
-  displayRecipes(recipeDetails);
-  updatePaginationControls(page, totalResults);
+
+  if (recipes && recipes.hits.length > 0) {
+    const totalResults = recipes.count;
+    const recipeDetails = extractRecipeDetails(recipes);
+    displayRecipes(recipeDetails);
+    updatePaginationControls(page, totalResults);
+  } else {
+    message.textContent = "No recipes found";
+  }
 }
 
 function updatePaginationControls(page, totalResults) {
-  const previousButton = document.getElementById("previous-page");
-  const nextButton = document.getElementById("next-page");
+  const previousButton = document.getElementById("previous-button");
+  const nextButton = document.getElementById("next-button");
 
   // Disable button if on first page
   previousButton.disabled = page === 0;
@@ -83,11 +89,6 @@ async function getRecipes(query, from = 0, to = 20) {
 
 // Extracting recipe information
 function extractRecipeDetails(response) {
-  const message = document.getElementById("message");
-  if (!response || !response.hits || response.hits.length === 0) {
-    message.textContent = "No recipes found";
-    return [];
-  }
   return response.hits.slice(0, 20).map((hit) => ({
     name: hit.recipe.label,
     url: hit.recipe.url,
