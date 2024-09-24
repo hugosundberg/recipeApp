@@ -55,6 +55,10 @@ async function handleSearch(url = null) {
     if (recipes && recipes.hits.length > 0) {
       const totalResults = recipes.count; // Get the total number of results
       const recipeDetails = extractRecipeDetails(recipes); // Extract the recipe details
+      const paginationControls = document.getElementById("pagination-controls");
+
+      paginationControls.style.display = "flex";
+
       displayRecipes(recipeDetails); // Display the recipes
 
       // Update the pagination controls

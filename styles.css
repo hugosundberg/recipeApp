@@ -69,14 +69,28 @@ body {
 #message {
     margin-top: 20px;
 }
+
+.pagination-controls {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.pagination-controls p {
+    margin-left: 10px;
+}
+
 .pagination-controls button {
-    width: 150px;
+    width: 120px;
     height: 40px;
-    margin-inline: 10px;
     font-size: 17px;
     border: none;
     background-color: transparent;
     justify-content: space-between;
+    padding: 0;
 }
 
 .pagination-controls button:hover {
