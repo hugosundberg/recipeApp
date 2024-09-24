@@ -4,6 +4,19 @@ const apiId = "3fac8ac0";
 let currentPage = 0;
 const resultsPerPage = 20;
 
+// Add event listener to the search button
+document.addEventListener("DOMContentLoaded", () => {
+  const searchButton = document.querySelector(".search-button");
+  searchButton.addEventListener("click", handleSearch);
+});
+
+// Event listener for 'Enter' key
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    handleSearch();
+  }
+});
+
 // Function to handle the search button click
 async function handleSearch(page = 0) {
   const searchBar = document.querySelector(".search-bar");
@@ -26,12 +39,7 @@ async function handleSearch(page = 0) {
   displayRecipes(recipeDetails);
 }
 
-// Add event listener to the search button
-document.addEventListener("DOMContentLoaded", () => {
-  const searchButton = document.querySelector(".search-button");
-  searchButton.addEventListener("click", handleSearch);
-});
-
+// Fetching recipes from EDAMAM API
 async function getRecipes(query, from = 0, to = 20) {
   const apiUrl = `https://api.edamam.com/api/recipes/v2?type=public&q=${query}&app_id=${apiId}&app_key=${apiKey}&from=${from}&to=${to}`;
 
@@ -48,13 +56,7 @@ async function getRecipes(query, from = 0, to = 20) {
   }
 }
 
-// Event listener for 'Enter' key
-document.addEventListener("keydown", function (event) {
-  if (event.key === "Enter") {
-    handleSearch();
-  }
-});
-
+// Extracting recipe information
 function extractRecipeDetails(response) {
   const message = document.getElementById("message");
   if (!response || !response.hits || response.hits.length === 0) {
@@ -69,6 +71,7 @@ function extractRecipeDetails(response) {
   }));
 }
 
+// Display recipes as cards
 function displayRecipes(recipeDetails) {
   const recipeContainer = document.getElementById("recipe-container");
   recipeContainer.innerHTML = ""; // Clear previous search results
