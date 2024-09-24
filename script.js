@@ -17,8 +17,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const previousButton = document.getElementById("previous-button");
   previousButton.addEventListener("click", () => {
-    currentPage--;
-    handleSearch(currentPage);
+    if (currentPage > 0) {
+      currentPage--;
+      handleSearch(currentPage);
+      console.log(currentPage);
+    }
   });
 });
 
