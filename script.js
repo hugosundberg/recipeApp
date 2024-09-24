@@ -1,45 +1,40 @@
 const apiKey = "c56415d77325af3a344d29207d9dcdb3";
 const apiId = "3fac8ac0";
 
-let currentPage = 0;
-const resultsPerPage = 20;
+let nextLink = null; // Store the link for the next page of results
 
 // Add event listeners to buttons
 document.addEventListener("DOMContentLoaded", () => {
   const searchButton = document.querySelector(".search-button");
-  searchButton.addEventListener("click", () => handleSearch(currentPage));
+  searchButton.addEventListener("click", () => handleSearch());
 
-  const nextButton = document.getElementById("next-button");
+  const nextButton = document.getElementById("next-page");
   nextButton.addEventListener("click", () => {
-    currentPage++;
-    handleSearch(currentPage);
+    if (nextLink) {
+      handleSearch(nextLink); // Use the next link to get the next page
+    }
   });
 
-  const previousButton = document.getElementById("previous-button");
+  const previousButton = document.getElementById("previous-page");
   previousButton.addEventListener("click", () => {
-    if (currentPage > 0) {
-      currentPage--;
-      handleSearch(currentPage);
-      console.log(currentPage);
-    }
+    // Logic for handling previous can be added if needed
   });
 });
 
 // Event listener for 'Enter' key
 document.addEventListener("keydown", function (event) {
   if (event.key === "Enter") {
-    currentPage = 0;
-    handleSearch(currentPage);
+    handleSearch();
   }
 });
 
-// Function to handle the search button click
-async function handleSearch(page = 0) {
+// Function to handle search and pagination
+async function handleSearch(url = null) {
   const searchBar = document.querySelector(".search-bar");
   const query = searchBar.value;
   const message = document.getElementById("message");
 
-  if (query === "") {
+  if (query === "" && !url) {
     message.textContent = "Please enter a search term";
     return;
   }
@@ -47,41 +42,42 @@ async function handleSearch(page = 0) {
   // Loading indicator
   message.textContent = "Loading...";
 
-  const from = page * resultsPerPage;
-  const to = from + resultsPerPage;
+  try {
+    const recipes = await getRecipes(query, url);
 
-  console.log("Current page: " + currentPage);
+    if (recipes && recipes.hits.length > 0) {
+      const totalResults = recipes.count; // Get the total number of results
+      const recipeDetails = extractRecipeDetails(recipes); // Extract the recipe details
+      displayRecipes(recipeDetails); // Display the recipes
 
-  const recipes = await getRecipes(query, from, to);
-
-  if (recipes && recipes.hits.length > 0) {
-    const totalResults = recipes.count;
-    const recipeDetails = extractRecipeDetails(recipes);
-    displayRecipes(recipeDetails);
-    updatePaginationControls(page, totalResults);
-    console.log(recipes);
-  } else {
-    message.textContent = "No recipes found";
+      // Update the pagination controls
+      updatePaginationControls(recipes._links);
+    } else {
+      message.textContent = "No recipes found";
+    }
+  } catch (error) {
+    message.textContent = "Error fetching recipes";
   }
 }
 
-function updatePaginationControls(page, totalResults) {
-  const previousButton = document.getElementById("previous-button");
-  const nextButton = document.getElementById("next-button");
+function updatePaginationControls(links) {
+  const nextButton = document.getElementById("next-page");
 
-  // Disable button if on first page
-  previousButton.disabled = page === 0;
-
-  // Disable button if on last page
-  const maxPages = Math.ceil(totalResults / resultsPerPage);
-  nextButton.disabled = page >= maxPages - 1;
+  // Check if the "next" link exists in the response
+  if (links && links.next) {
+    nextLink = links.next.href; // Store the next link
+    nextButton.disabled = false; // Enable the "Next" button
+  } else {
+    nextLink = null; // No more pages
+    nextButton.disabled = true; // Disable the "Next" button
+  }
 }
 
-// Fetching recipes from EDAMAM API
-async function getRecipes(query, from = 0, to = 20) {
-  const apiUrl = `https://api.edamam.com/api/recipes/v2?type=public&q=${query}&app_id=${apiId}&app_key=${apiKey}&from=${from}&to=${to}`;
-
-  console.log("From: " + from + " \n " + "To: " + to);
+// Fetching recipes from the EDAMAM API
+async function getRecipes(query, url = null) {
+  const apiUrl =
+    url ||
+    `https://api.edamam.com/api/recipes/v2?type=public&q=${query}&app_id=${apiId}&app_key=${apiKey}`;
 
   try {
     const response = await fetch(apiUrl);
@@ -90,16 +86,20 @@ async function getRecipes(query, from = 0, to = 20) {
     }
     const data = await response.json();
     document.getElementById("message").textContent = ""; // Clear loading message
-    return data;
+    return data; // Return the data to the caller
   } catch (error) {
     console.error("Fetch error: ", error);
-    document.getElementById("message").textContent =
-      "Unable to fetch recipes. Please try again later.";
+    throw error;
   }
 }
 
 // Extracting recipe information
 function extractRecipeDetails(response) {
+  const message = document.getElementById("message");
+  if (!response || !response.hits || response.hits.length === 0) {
+    message.textContent = "No recipes found";
+    return [];
+  }
   return response.hits.map((hit) => ({
     name: hit.recipe.label,
     url: hit.recipe.url,
