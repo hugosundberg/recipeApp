@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // Event listener for 'Enter' key
 document.addEventListener("keydown", function (event) {
   if (event.key === "Enter") {
+    currentPage = 0;
     handleSearch(currentPage);
   }
 });
@@ -48,6 +49,9 @@ async function handleSearch(page = 0) {
 
   const from = page * resultsPerPage;
   const to = from + resultsPerPage;
+
+  console.log("From: " + from + " \n " + "To: " + to);
+  console.log("Current page: " + currentPage);
 
   const recipes = await getRecipes(query, from, to);
 
@@ -82,11 +86,13 @@ async function getRecipes(query, from = 0, to = 20) {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-    message.textContent = "";
-    return await response.json();
+    const data = await response.json();
+    document.getElementById("message").textContent = ""; // Clear loading message
+    return data;
   } catch (error) {
     console.error("Fetch error: ", error);
-    alert("Unable to fetch recipes. Please try again later.");
+    document.getElementById("message").textContent =
+      "Unable to fetch recipes. Please try again later.";
   }
 }
 
