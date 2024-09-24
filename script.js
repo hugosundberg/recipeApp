@@ -1,8 +1,11 @@
 const apiKey = "c56415d77325af3a344d29207d9dcdb3";
 const apiId = "3fac8ac0";
 
+let currentPage = 0;
+const resultsPerPage = 20;
+
 // Function to handle the search button click
-async function handleSearch() {
+async function handleSearch(page = 0) {
   const searchBar = document.querySelector(".search-bar");
   const query = searchBar.value;
   const message = document.getElementById("message");
@@ -15,7 +18,10 @@ async function handleSearch() {
   // Loading indicator
   message.textContent = "Loading...";
 
-  const recipes = await getRecipes(query);
+  const from = page * resultsPerPage;
+  const to = from + resultsPerPage;
+
+  const recipes = await getRecipes(query, from, to);
   const recipeDetails = extractRecipeDetails(recipes);
   displayRecipes(recipeDetails);
 }
@@ -26,8 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
   searchButton.addEventListener("click", handleSearch);
 });
 
-async function getRecipes(query) {
-  const apiUrl = `https://api.edamam.com/api/recipes/v2?type=public&q=${query}&app_id=${apiId}&app_key=${apiKey}`;
+async function getRecipes(query, from = 0, to = 20) {
+  const apiUrl = `https://api.edamam.com/api/recipes/v2?type=public&q=${query}&app_id=${apiId}&app_key=${apiKey}&from=${from}&to=${to}`;
 
   try {
     const response = await fetch(apiUrl);
