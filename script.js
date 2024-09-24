@@ -89,7 +89,7 @@ async function getRecipes(query, from = 0, to = 20) {
 
 // Extracting recipe information
 function extractRecipeDetails(response) {
-  return response.hits.slice(0, 20).map((hit) => ({
+  return response.hits.map((hit) => ({
     name: hit.recipe.label,
     url: hit.recipe.url,
     image: hit.recipe.image,
