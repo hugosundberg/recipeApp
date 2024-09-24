@@ -39,6 +39,18 @@ async function handleSearch(page = 0) {
   displayRecipes(recipeDetails);
 }
 
+function updatePaginationControls(page, totalResults) {
+  const previousButton = document.getElementById("previous-page");
+  const nextButton = document.getElementById("next-page");
+
+  // Disable button if on first page
+  previousButton.disabled = page === 0;
+
+  // Disable button if on last page
+  const maxPages = Math.ceil(totalResults / resultsPerPage);
+  nextButton.disabled = page >= maxPages - 1;
+}
+
 // Fetching recipes from EDAMAM API
 async function getRecipes(query, from = 0, to = 20) {
   const apiUrl = `https://api.edamam.com/api/recipes/v2?type=public&q=${query}&app_id=${apiId}&app_key=${apiKey}&from=${from}&to=${to}`;
