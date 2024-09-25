@@ -9,21 +9,28 @@
 </head>
 
 <body>
-    <div class="container">
-        <h1 class="title">Find Your Favorite Recipe!</h1>
-        <div class="search-bar-container">
-            <input type="text" placeholder="Search for a recipe..." class="search-bar" id="search-bar">
-            <button class="search-button">Search</button>
+    <div class="wrapper">
+        <div class="header">
+            <h1 class="title">Find Your Favorite Recipe!</h1>
+            <div class="search-bar-container">
+                <input type="text" placeholder="Search for a recipe..." class="search-bar" id="search-bar">
+                <button class="search-button">Search</button>
+            </div>
+            <div id="message"></div>
+            <div class="pagination-controls" id="pagination-controls" style="display: none;">
+                <button id="previous-button"><i class="arrow left"></i>Previous</button>
+                <p id="current-page"></p>
+                <button id="next-button">Next<i class="arrow right"></i></button>
+            </div>
         </div>
-        <div id="message"></div>
-        <div class="pagination-controls" id="pagination-controls" style="display: none;">
+        <div class="results-container" id="results-container">
+            <div id="recipe-container" class="recipe-container"></div>
+        </div>
+        <div class="pagination-controls" id="pagination-controls-bottom" style="display: none;">
             <button id="previous-button"><i class="arrow left"></i>Previous</button>
             <p id="current-page"></p>
             <button id="next-button">Next<i class="arrow right"></i></button>
         </div>
-    </div>
-    <div class="results-container" id="results-container">
-        <div id="recipe-container" class="recipe-container"></div>
     </div>
     <script src="script.js"></script>
 </body>

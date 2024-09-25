@@ -9,17 +9,31 @@ body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
     color: #333;
 }
 
-.container {
+.wrapper {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    max-width: 1000px;
-    padding: 20px;
+    height: 300px;
+    width: 100%;
+    background-image: linear-gradient(black, rgba(128, 128, 128, 0));
 }
 
 .title {
@@ -33,6 +47,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 90%;
+    max-width: 1000px;
     border-radius: 25px;
     overflow: hidden;
     border: 1px solid #ddd;
@@ -73,7 +89,7 @@ body {
 #message {
     margin-top: 20px;
     color: white;
-    font-size: 30px;
+    font-size: 20px;
 }
 
 .pagination-controls {
@@ -87,14 +103,14 @@ body {
 }
 
 .pagination-controls p {
-    margin-left: 10px;
-    font-size: 30px;
+    margin-inline: 10px;
+    font-size: 20px;
 }
 
 .pagination-controls button {
     color: white;
     height: 40px;
-    font-size: 30px;
+    font-size: 20px;
     border: none;
     background-color: transparent;
     justify-content: space-between;
@@ -109,7 +125,7 @@ body {
     border: solid white;
     border-width: 0 5px 5px 0;
     display: inline-block;
-    padding: 10px;
+    padding: 6px;
     border-radius: 3px;
     margin-inline: 10px;
 }
@@ -128,6 +144,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 80vh;
+    padding-top: 20px;
 } 
 
 .recipe-container {
